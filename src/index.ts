@@ -1,13 +1,17 @@
-import express from "express"
+import express from "express";
+
+
+import connect from './utils/connect.util';
+import log from './utils/logger.util';
+import routes from './routes';
+
+const PORT = process.env.PORT || 5000;
 
 const app = express();
 
-app.get("/", (req,res) =>{
-    res.send({status:200,msg:"OK", data:null})
-})
-
-const port = process.env.PORT || 5000;
-app.listen(port,() =>{
-    console.log(port);
-    console.log("Server is up and running on port 5000")
-})
+app.use(express.json());
+app.listen(PORT, async () => {
+  log.info(`TS server up and running at localhost port ${PORT}`);
+  await connect();
+  routes(app);
+});
