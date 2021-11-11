@@ -1,4 +1,9 @@
 import { Express, Request, Response } from "express";
+import {
+  getUserHandler,
+  postUserHandler,
+  deleteUserHandler,
+} from "./controllers/user.controller";
 
 import validateResource from "./middlewares/validateResource.middleware";
 import {
@@ -8,8 +13,6 @@ import {
   deleteUserSchema,
 } from "./schemas/user.schema";
 
-
-
 const routes = (app: Express) => {
   app.get("/health-check", (req: Request, res: Response) => {
     res.send({ status: 200, data: null, msg: "All good" });
@@ -17,7 +20,7 @@ const routes = (app: Express) => {
 
   // user related routes
   app.post("/api/post-user", validateResource(postUserSchema), postUserHandler);
-  app.get(
+  app.post(
     "/api/get-user/:username",
     validateResource(getUserSchema),
     getUserHandler

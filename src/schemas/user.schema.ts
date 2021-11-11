@@ -16,10 +16,13 @@ export const postUserSchema = object({
 });
 
 export const getUserSchema = object({
-  params: object({
+  body: object({
     username: string({
       required_error: "Username required",
     }),
+    password:string({
+      required_error:"Password required"
+    })
   }),
 });
 
