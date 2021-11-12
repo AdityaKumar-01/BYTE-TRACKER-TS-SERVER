@@ -27,11 +27,13 @@ export const getProjectHandler = async (
   req: Request<getProjectInput["params"]>,
   res: Response
 ) => {
+  
   try {
-    const uuid = req.params.uuid;
-    const reply = await getProjectService({ uuid });
+    const id = req.params.uuid;
+    const reply = await getProjectService({ uuid:id });
     return res.send(reply);
   } catch (error: any) {
+   
     return res.send({ status: 409, data: null, msg: error.message });
   }
 };

@@ -1,4 +1,4 @@
-import { string, tuple, object, TypeOf, date } from "zod";
+import { string, tuple, object, TypeOf, array } from "zod";
 
 export const postIssueSchema = object({
   body: object({
@@ -11,14 +11,14 @@ export const postIssueSchema = object({
     type: string({
       required_error: "Type required",
     }),
-    createdAt: date({
+    createdAt: string({
       required_error: "date required",
     }),
     creator: string({
       required_error: "Username of creator required",
     }),
-    assignee: tuple([]),
-    deadline: date({
+    assignee: array(string()),
+    deadline: string({
       required_error: "Deadline required",
     }),
     priority: string({

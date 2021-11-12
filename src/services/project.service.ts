@@ -22,7 +22,7 @@ export const getProjectService = async (
   >
 ) => {
   try {
-    const proj = ProjectModel.find({ uuid: input["uuid"] });
+    const proj = await ProjectModel.find({ uuid: input["uuid"] });
     return { status: 200, data: proj, msg: "Found" };
   } catch (error: any) {
     return { status: 409, data: null, msg: error.message };
@@ -39,6 +39,6 @@ export const deleteProjectService = async (
 ) => {
   const user = await ProjectModel.deleteOne({ uuid: input["uuid"] });
 
-  if (user.acknowledged) return { status: 200, data: null, msg: "Deleted" };
+  if (user.deletedCount) return { status: 200, data: null, msg: "Deleted" };
   else return { status: 409, data: null, msg: "Cannot delete" };
 };

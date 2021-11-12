@@ -1,9 +1,10 @@
 import express from "express";
-
+import dotenv from "dotenv";
 import connect from './utils/connect.util';
 import log from './utils/logger.util';
 
 import routes from './routes';
+dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 

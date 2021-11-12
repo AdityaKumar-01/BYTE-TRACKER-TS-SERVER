@@ -49,11 +49,7 @@ const routes = (app: Express) => {
 
   // user related routes
   app.post("/api/post-user", validateResource(postUserSchema), postUserHandler);
-  app.post(
-    "/api/get-user/:username",
-    validateResource(getUserSchema),
-    getUserHandler
-  );
+  app.post("/api/get-user", validateResource(getUserSchema), getUserHandler);
   // app.patch(
   //   "/api/update-user",
   //   validateResource(updateUserSchema),
@@ -72,7 +68,7 @@ const routes = (app: Express) => {
     postProjectHandler
   );
   app.get(
-    "/api/get-project/:projectID",
+    "/api/get-project/:uuid",
     validateResource(getProjectSchema),
     getProjectHandler
   );
@@ -94,7 +90,7 @@ const routes = (app: Express) => {
     postIssueHandler
   );
   app.get(
-    "/api/get-issue/:issueID",
+    "/api/get-issue/:uuid",
     validateResource(getIssueSchema),
     getIssueHandler
   );

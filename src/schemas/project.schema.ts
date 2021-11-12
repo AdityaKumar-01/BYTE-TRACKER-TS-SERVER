@@ -1,4 +1,4 @@
-import { string, object, TypeOf, tuple } from "zod";
+import { string, object, TypeOf, tuple, array } from "zod";
 
 export const postProjectSchema = object({
   body: object({
@@ -14,9 +14,9 @@ export const postProjectSchema = object({
     type: string({
       required_error: "Type of project required",
     }),
-    people: tuple([]),
-    boards: tuple([]),
-    issues: tuple([]),
+    people: array(string()),
+    boards: array(string()),
+    issues: array(string()),
   }),
 });
 

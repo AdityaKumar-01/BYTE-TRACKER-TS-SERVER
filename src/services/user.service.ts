@@ -18,7 +18,7 @@ export const postUserService = async (
       return { status: 201, data: null, msg: "OK" };
     }
   } catch (error: any) {
-    return { status: 400, data: null, msg: error };
+    return { status: 400, data: null, msg: error.message };
   }
 };
 
@@ -50,6 +50,6 @@ export const deleteUserService = async (
 ) => {
   const user = await UserModel.deleteOne({ username: input["username"] });
 
-  if (user.acknowledged) return { status: 200, data: null, msg: "Deleted" };
+  if (user.deletedCount) return { status: 200, data: null, msg: "Deleted" };
   else return { status: 409, data: null, msg: "Cannot delete" };
 };

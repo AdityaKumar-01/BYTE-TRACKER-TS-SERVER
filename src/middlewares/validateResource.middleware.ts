@@ -10,7 +10,8 @@ const validateResource = (schema : AnyZodObject) => (req:Request, res:Response, 
         })
         next();
     }catch(err:any){
-        return res.send({status:400,data:null,msg:err.errors})
+    
+        return res.send({status:409,data:null,msg:"Bad request"})
     }
 }
 
