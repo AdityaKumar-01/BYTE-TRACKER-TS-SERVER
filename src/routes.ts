@@ -1,17 +1,34 @@
 import { Express, Request, Response } from "express";
+
+// middlewares
+import validateResource from "./middlewares/validateResource.middleware";
+
+// controllers
 import {
   getUserHandler,
   postUserHandler,
   deleteUserHandler,
 } from "./controllers/user.controller";
 
-import validateResource from "./middlewares/validateResource.middleware";
+import {
+  getProjectHandler,
+  postProjectHandler,
+  deleteProjectHandler,
+} from "./controllers/project.controller";
+
+// Schemas
 import {
   postUserSchema,
   getUserSchema,
   updateUserSchema,
   deleteUserSchema,
 } from "./schemas/user.schema";
+
+import {
+  postProjectSchema,
+  getProjectSchema,
+  deleteProjectSchema,
+} from "./schemas/project.schema";
 
 const routes = (app: Express) => {
   app.get("/health-check", (req: Request, res: Response) => {
@@ -25,11 +42,11 @@ const routes = (app: Express) => {
     validateResource(getUserSchema),
     getUserHandler
   );
-  app.patch(
-    "/api/update-user",
-    validateResource(updateUserSchema),
-    updateUserHandler
-  );
+  // app.patch(
+  //   "/api/update-user",
+  //   validateResource(updateUserSchema),
+  //   updateUserHandler
+  // );
   app.delete(
     "/api/delete-user",
     validateResource(deleteUserSchema),
@@ -47,11 +64,11 @@ const routes = (app: Express) => {
     validateResource(getProjectSchema),
     getProjectHandler
   );
-  app.patch(
-    "/api/update-project",
-    validateResource(updateProjectSchema),
-    updateProjectHandler
-  );
+  // app.patch(
+  //   "/api/update-project",
+  //   validateResource(updateProjectSchema),
+  //   updateProjectHandler
+  // );
   app.delete(
     "/api/delete-project",
     validateResource(deleteProjectSchema),

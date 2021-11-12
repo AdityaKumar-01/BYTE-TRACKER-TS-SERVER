@@ -1,5 +1,7 @@
 import { DocumentDefinition } from "mongoose";
+
 import UserModel, { UserDocument } from "../models/user.model";
+
 import bcrypt from "bcrypt";
 
 export const postUserService = async (

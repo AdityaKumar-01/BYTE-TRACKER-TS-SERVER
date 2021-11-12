@@ -1,8 +1,8 @@
 import express from "express";
 
-
 import connect from './utils/connect.util';
 import log from './utils/logger.util';
+
 import routes from './routes';
 
 const PORT = process.env.PORT || 5000;
