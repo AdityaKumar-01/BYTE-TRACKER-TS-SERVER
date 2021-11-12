@@ -16,6 +16,12 @@ import {
   deleteProjectHandler,
 } from "./controllers/project.controller";
 
+import {
+  getIssueHandler,
+  postIssueHandler,
+  deleteIssueHandler,
+} from "./controllers/issue.controller";
+
 // Schemas
 import {
   postUserSchema,
@@ -29,6 +35,12 @@ import {
   getProjectSchema,
   deleteProjectSchema,
 } from "./schemas/project.schema";
+
+import {
+  postIssueSchema,
+  getIssueSchema,
+  deleteIssueSchema,
+} from "./schemas/issue.schema";
 
 const routes = (app: Express) => {
   app.get("/health-check", (req: Request, res: Response) => {
@@ -86,11 +98,11 @@ const routes = (app: Express) => {
     validateResource(getIssueSchema),
     getIssueHandler
   );
-  app.patch(
-    "/api/update-issue",
-    validateResource(updateIssueSchema),
-    updateIssueHandler
-  );
+  // app.patch(
+  //   "/api/update-issue",
+  //   validateResource(updateIssueSchema),
+  //   updateIssueHandler
+  // );
   app.delete(
     "/api/delete-issue",
     validateResource(deleteIssueSchema),

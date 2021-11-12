@@ -29,16 +29,16 @@ export const getProjectService = async (
   }
 };
 
-export const deleteProjectService  = async(
-   input: DocumentDefinition<
+export const deleteProjectService = async (
+  input: DocumentDefinition<
     Omit<
       ProjectDocument,
       "title" | "creator" | "type" | "people" | "boards" | "issues"
     >
   >
-) =>{
-     const user = await ProjectModel.deleteOne({ uuid: input["uuid"] });
+) => {
+  const user = await ProjectModel.deleteOne({ uuid: input["uuid"] });
 
-     if (user.acknowledged) return { status: 200, data: null, msg: "Deleted" };
-     else return { status: 409, data: null, msg: "Cannot delete" };
-}
+  if (user.acknowledged) return { status: 200, data: null, msg: "Deleted" };
+  else return { status: 409, data: null, msg: "Cannot delete" };
+};
