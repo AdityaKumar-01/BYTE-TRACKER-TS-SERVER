@@ -8,6 +8,7 @@ import {
   getUserHandler,
   postUserHandler,
   updateUserActivityHandler,
+  updateUserDetailHandler,
   deleteUserHandler,
 } from "./controllers/user.controller";
 
@@ -28,6 +29,7 @@ import {
   postUserSchema,
   getUserSchema,
   updateUserActivitySchema,
+  updateUserDetailSchema,
   deleteUserSchema,
 } from "./schemas/user.schema";
 
@@ -52,9 +54,14 @@ const routes = (app: Express) => {
   app.post("/api/post-user", validateResource(postUserSchema), postUserHandler);
   app.post("/api/get-user", validateResource(getUserSchema), getUserHandler);
   app.patch(
-    "/api/update-user/:username",
+    "/api/update-user-activity/:username",
     validateResource(updateUserActivitySchema),
     updateUserActivityHandler
+  );
+  app.patch(
+    "/api/update-user-detail",
+    validateResource(updateUserDetailSchema),
+    updateUserDetailHandler
   );
   app.delete(
     "/api/delete-user",

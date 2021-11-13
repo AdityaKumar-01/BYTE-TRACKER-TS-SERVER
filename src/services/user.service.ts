@@ -1,8 +1,12 @@
 import { DocumentDefinition } from "mongoose";
 
-import UserModel, { UserDocument } from "../models/user.model";
+import UserModel, {
+  UserDocument,
+  UpdateUserDocument,
+} from "../models/user.model";
 
 import bcrypt from "bcrypt";
+import config from "config";
 
 export const postUserService = async (
   input: DocumentDefinition<
@@ -47,34 +51,41 @@ export const getUserService = async (
   else return { status: 404, data: null, msg: "User not Found" };
 };
 
-export const updateUserService = async (
-  input: DocumentDefinition<
-    Omit<UserDocument, "createdAt" | "updatedAt" | "comparePassword">
-  >
+export const updateUserDetailService = async (
+  input: DocumentDefinition<UpdateUserDocument>
 ) => {
-  return { status: 200 };
+  try {
+    if (input.password) {
+      const salt = await bcrypt.genSalt(config.get<number>("saltWorkFactor"));
+      const hash = await bcrypt.hashSync(input.password, salt);
+
+      const data = {
+        username: input.updatedUsername,
+        email: input.email,
+        password: hash,
+      };
+      const result = await UserModel.updateOne(
+        { username: input.username },
+        { $set: data }
+      );
+      if (result.acknowledged) return { staus: 200, data: data, msg: "OK" };
+      else throw new Error("Cannot Update");
+    } else {
+      const data = {
+        username: input.updatedUsername,
+        email: input.email,
+      };
+      const result = await UserModel.updateOne(
+        { username: input.username },
+        { $set: data }
+      );
+      if (result.acknowledged) return { staus: 200, data: data, msg: "OK" };
+      else throw new Error("Cannot Update");
+    }
+  } catch (error: any) {
+    return { status: 409, data: null, msg: error.message };
+  }
 };
-
-export const deleteUserService = async (
-  input: DocumentDefinition<
-    Omit<
-      UserDocument,
-      | "password"
-      | "createdAt"
-      | "updatedAt"
-      | "comparePassword"
-      | "email"
-      | "projects"
-      | "issues"
-    >
-  >
-) => {
-  const user = await UserModel.deleteOne({ username: input["username"] });
-
-  if (user.deletedCount) return { status: 200, data: null, msg: "Deleted" };
-  else return { status: 409, data: null, msg: "Cannot delete" };
-};
-
 export const updateUserActivityService = async (
   input: DocumentDefinition<
     Omit<
@@ -103,4 +114,24 @@ export const updateUserActivityService = async (
 
     return { status: 200, data: null, msg: "OK" };
   } else return { status: 404, data: null, msg: "User not Found" };
+};
+
+export const deleteUserService = async (
+  input: DocumentDefinition<
+    Omit<
+      UserDocument,
+      | "password"
+      | "createdAt"
+      | "updatedAt"
+      | "comparePassword"
+      | "email"
+      | "projects"
+      | "issues"
+    >
+  >
+) => {
+  const user = await UserModel.deleteOne({ username: input["username"] });
+
+  if (user.deletedCount) return { status: 200, data: null, msg: "Deleted" };
+  else return { status: 409, data: null, msg: "Cannot delete" };
 };

@@ -1,16 +1,17 @@
 import { Request, Response } from "express";
-import log from "./../utils/logger.util";
 
 import {
   postUserService,
   getUserService,
   updateUserActivityService,
   deleteUserService,
+  updateUserDetailService,
 } from "./../services/user.service";
 import {
   postUserInput,
   getUserInput,
   updateUserActivityInput,
+  updateUserDetailInput,
   deleteUserInput,
 } from "./../schemas/user.schema";
 
@@ -37,6 +38,7 @@ export const getUserHandler = async (
     return res.send({ status: 409, data: null, msg: error.message });
   }
 };
+
 export const updateUserActivityHandler = async (
   req: Request<updateUserActivityInput["params"]>,
   res: Response
@@ -46,9 +48,22 @@ export const updateUserActivityHandler = async (
     const reply = await updateUserActivityService({ username, ...req.body });
     return res.send(reply);
   } catch (error: any) {
-    res.send({});
+    return res.send({ status: 409, data: null, msg: error.message });
   }
 };
+
+export const updateUserDetailHandler = async (
+  req: Request<{}, {}, updateUserDetailInput["body"]>,
+  res: Response
+) => {
+  try {
+    const reply = await updateUserDetailService(req.body);
+    return res.send(reply);
+  } catch (error: any) {
+    return res.send({ status: 409, data: null, msg: error.message });
+  }
+};
+
 export const deleteUserHandler = async (
   req: Request<{}, {}, deleteUserInput["body"]>,
   res: Response

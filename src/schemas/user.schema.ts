@@ -39,7 +39,14 @@ export const updateUserActivitySchema = object({
     }),
   }),
 });
-
+export const updateUserDetailSchema = object({
+  body: object({
+    username: string(),
+    updatedUsername: string(),
+    password: string(),
+    email: string().email(),
+  }),
+});
 export const deleteUserSchema = object({
   body: object({
     username: string({
@@ -57,4 +64,5 @@ export type postUserInput = Omit<
 >;
 export type getUserInput = TypeOf<typeof getUserSchema>;
 export type updateUserActivityInput = TypeOf<typeof updateUserActivitySchema>;
+export type updateUserDetailInput = TypeOf<typeof updateUserDetailSchema>;
 export type deleteUserInput = TypeOf<typeof deleteUserSchema>;
