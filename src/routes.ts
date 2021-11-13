@@ -7,6 +7,7 @@ import validateResource from "./middlewares/validateResource.middleware";
 import {
   getUserHandler,
   postUserHandler,
+  updateUserActivityHandler,
   deleteUserHandler,
 } from "./controllers/user.controller";
 
@@ -26,7 +27,7 @@ import {
 import {
   postUserSchema,
   getUserSchema,
-  updateUserSchema,
+  updateUserActivitySchema,
   deleteUserSchema,
 } from "./schemas/user.schema";
 
@@ -50,11 +51,11 @@ const routes = (app: Express) => {
   // user related routes
   app.post("/api/post-user", validateResource(postUserSchema), postUserHandler);
   app.post("/api/get-user", validateResource(getUserSchema), getUserHandler);
-  // app.patch(
-  //   "/api/update-user",
-  //   validateResource(updateUserSchema),
-  //   updateUserHandler
-  // );
+  app.patch(
+    "/api/update-user/:username",
+    validateResource(updateUserActivitySchema),
+    updateUserActivityHandler
+  );
   app.delete(
     "/api/delete-user",
     validateResource(deleteUserSchema),

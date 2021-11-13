@@ -24,7 +24,15 @@ export const postUserService = async (
 
 export const getUserService = async (
   input: DocumentDefinition<
-    Omit<UserDocument, "createdAt" | "updatedAt" | "comparePassword" | "email">
+    Omit<
+      UserDocument,
+      | "createdAt"
+      | "updatedAt"
+      | "comparePassword"
+      | "email"
+      | "projects"
+      | "issues"
+    >
   >
 ) => {
   let user = await UserModel.find({
@@ -39,12 +47,25 @@ export const getUserService = async (
   else return { status: 404, data: null, msg: "User not Found" };
 };
 
-// export const updateUserService = async (input: DocumentDefinition<Omit<UserDocument, "password" | "createdAt" | "updatedAt" | "comparePassword" | "email">>)
+export const updateUserService = async (
+  input: DocumentDefinition<
+    Omit<UserDocument, "createdAt" | "updatedAt" | "comparePassword">
+  >
+) => {
+  return { status: 200 };
+};
+
 export const deleteUserService = async (
   input: DocumentDefinition<
     Omit<
       UserDocument,
-      "password" | "createdAt" | "updatedAt" | "comparePassword" | "email"
+      | "password"
+      | "createdAt"
+      | "updatedAt"
+      | "comparePassword"
+      | "email"
+      | "projects"
+      | "issues"
     >
   >
 ) => {
@@ -52,4 +73,34 @@ export const deleteUserService = async (
 
   if (user.deletedCount) return { status: 200, data: null, msg: "Deleted" };
   else return { status: 409, data: null, msg: "Cannot delete" };
+};
+
+export const updateUserActivityService = async (
+  input: DocumentDefinition<
+    Omit<
+      UserDocument,
+      "password" | "createdAt" | "updatedAt" | "comparePassword" | "email"
+    >
+  >
+) => {
+  let user = await UserModel.find({
+    username: input["username"],
+  });
+
+  if (user.length === 1) {
+    if (input.projects) {
+      const user = await UserModel.findOneAndUpdate(
+        { username: input.username },
+        { $push: { projects: input.projects } }
+      );
+    }
+    if (input.issues) {
+      const user = await UserModel.findOneAndUpdate(
+        { username: input.username },
+        { $push: { issues: input.issues } }
+      );
+    }
+
+    return { status: 200, data: null, msg: "OK" };
+  } else return { status: 404, data: null, msg: "User not Found" };
 };

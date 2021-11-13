@@ -4,12 +4,13 @@ import log from "./../utils/logger.util";
 import {
   postUserService,
   getUserService,
+  updateUserActivityService,
   deleteUserService,
 } from "./../services/user.service";
 import {
   postUserInput,
   getUserInput,
-  updateUserInput,
+  updateUserActivityInput,
   deleteUserInput,
 } from "./../schemas/user.schema";
 
@@ -36,7 +37,18 @@ export const getUserHandler = async (
     return res.send({ status: 409, data: null, msg: error.message });
   }
 };
-
+export const updateUserActivityHandler = async (
+  req: Request<updateUserActivityInput["params"]>,
+  res: Response
+) => {
+  try {
+    const username = req.params.username;
+    const reply = await updateUserActivityService({ username, ...req.body });
+    return res.send(reply);
+  } catch (error: any) {
+    res.send({});
+  }
+};
 export const deleteUserHandler = async (
   req: Request<{}, {}, deleteUserInput["body"]>,
   res: Response

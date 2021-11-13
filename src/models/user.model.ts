@@ -8,6 +8,8 @@ export interface UserDocument extends mongoose.Document {
   createdAt: Date;
   updatedAt: Date;
   email: string;
+  projects:Array<string>,
+  issues:Array<string>,
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -16,6 +18,8 @@ const userSchema = new mongoose.Schema(
     username: { type: String, required: true },
     password: { type: String, required: true },
     email: { type: String, required: true },
+    projects:{type:Array},
+    issues:{type:Array}
   },
   { timestamps: true }
 );
